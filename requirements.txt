@@ -1,0 +1,6 @@
+argparse
+backports.shutil-get-terminal-size
+colorama
+requests
+selenium
+termcolor
