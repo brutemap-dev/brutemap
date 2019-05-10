@@ -18,6 +18,7 @@ from lib.manager import brutemanager
 @brutemanager
 def login(username, password):
     _, u_field, _ = getFormField()
+    u_field.clear()
     u_field.send_keys(username)
     u_field.submit()
     newFields = getFormField()
@@ -25,6 +26,7 @@ def login(username, password):
         newPage = getPage(browser.current_url)
         TARGET.PAGE.insert(0, newPage)
         passwordField = newFields[-1]
+        passwordField.clear()
         passwordField.send_keys(password)
         passwordField.submit()
         TARGET.PASSWORD_TESTED = True
