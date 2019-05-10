@@ -7,9 +7,9 @@ Brutemap
 
 |Build Status| |Python 2.7| |License|
 
-.. |Build Status| image:: https://api.travis-ci.org/brutemap-dev/brutemap.png?branch=master
-   :target: https://travis-ci.com/brutemap-dev/brutemap
-   :alt: Build Status
+.. |Build Status| image:: https://travis-ci.org/brutemap-dev/brutemap.svg?branch=master
+    :target: https://travis-ci.org/brutemap-dev/brutemap
+    :alt: Build Status
 
 .. |Python 2.7| image:: https://img.shields.io/badge/python-2.7-yellow.svg
    :target: https://www.python.org/downloads/
