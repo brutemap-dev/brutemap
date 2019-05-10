@@ -16,7 +16,9 @@ from lib.manager import brutemanager
 @brutemanager
 def login(username, password):
     form, u_field, p_field = getFormField()
+    u_field.clear()
     u_field.send_keys(username)
+    p_field.clear()
     p_field.send_keys(password)
     form.submit()
 
