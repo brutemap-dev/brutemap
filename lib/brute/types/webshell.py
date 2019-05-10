@@ -17,6 +17,7 @@ from lib.exceptions import BrutemapStopBruteForceException
 @brutemanager
 def login(password):
     _, _, p_field = getFormField()
+    p_field.clear()
     p_field.send_keys(password)
     p_field.submit()
 
