@@ -30,7 +30,7 @@ def checkTarget(url):
     response = None
 
     try:
-        wrapped = errormanager(requests.get, False)
+        wrapped = errormanager(requests.get)
         response = wrapped(url)
     except Exception, e:
         logger.exception(e)
