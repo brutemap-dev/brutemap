@@ -15,12 +15,11 @@ from lib.data import SETTING
 from lib.data import TARGET
 from lib.exceptions import BrutemapException
 from lib.exceptions import BrutemapStopBruteForceException
-from lib.webdriver import reinitWebDriver
 
 INFO_ACCOUNT = []
 RETRY_COUNT = 0
 
-def errormanager(func, re_init=True):
+def errormanager(func):
     """
     Menangkap spesifikasi pengecualian
     """
@@ -41,9 +40,6 @@ def errormanager(func, re_init=True):
                 raise e
 
             time.sleep(SETTING.DELAY)
-            if re_init:
-                reinitWebDriver()
-
             logger.error("Error occurred: %s" % str(e))
             if RETRY_COUNT != SETTING.MAX_RETRY:
                 RETRY_COUNT += 1
