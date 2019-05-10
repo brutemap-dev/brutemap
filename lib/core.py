@@ -18,6 +18,9 @@ import urlparse
 from backports.shutil_get_terminal_size import get_terminal_size
 from colorama import init as coloramainit
 from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.expected_conditions import visibility_of_element_located
+from selenium.webdriver.support.expected_conditions import visibility_of_all_elements_located
 from termcolor import colored
 
 from lib.utils.wordlist import Wordlist
@@ -41,6 +44,7 @@ from lib.settings import URL_SCHEMES
 from lib.settings import VERSION_STRING
 from lib.webdriver import reinitWebDriver
 from lib.webdriver import tryCloseWebDriver
+from lib.webdriver import waitingResult
 
 def stdoutWrite(msg):
     """
@@ -107,6 +111,7 @@ def interruptHandler(signum, frame):
     if SETTING.IGNORE_INTERRUPT:
         return
 
+    print
     registerInterruptHandler(reset=True)
 
     try:
@@ -136,6 +141,7 @@ def interruptHandler(signum, frame):
 
         raise BrutemapQuitException
 
+    # XXX: ketika sinyal interupsi didapat, webdriver otomatis ketutup?
     reinitWebDriver()
     registerInterruptHandler()
 
@@ -206,7 +212,7 @@ def verifyAccount():
     if isinstance(TARGET.PAGE, list):
         page, is_slide = TARGET.PAGE[0], True
 
-    if not re.search(page, browser.current_url):
+    if not re.search(re.escape(page), browser.current_url):
         # jika halaman berubah, kemungkinan akun valid.
         status = STATUS.OK
         if is_slide:
@@ -241,7 +247,8 @@ def getFormElements():
     Mendapatkan daftar ``form`` element, dari halaman situs.
     """
 
-    return browser.find_elements_by_tag_name("form")
+    elems = waitingResult(visibility_of_all_elements_located, By.TAG_NAME, "form") or []
+    return elems
 
 def findElement(parent, css_selector):
     """
@@ -249,7 +256,8 @@ def findElement(parent, css_selector):
     """
 
     try:
-        return parent.find_element_by_css_selector(css_selector)
+        elem = waitingResult(visibility_of_element_located, By.CSS_SELECTOR, css_selector)
+        return elem
     except NoSuchElementException:
         return None
 
