@@ -48,11 +48,14 @@ And, install the required modules:
 Usage
 -----
 
+.. image:: https://brutemap-dev.github.io/_static/preview.svg
+   :alt: Preview
+
 For basic use:
 
 ::
 
-    $ python brutemap.py -t http://www.example.com/admin/login.php -u admin -p default
+    $ python brutemap.py -t http://www.example.com/admin/login.php -u admin -p abc, root, default
 
 To display a list of available options:
 
