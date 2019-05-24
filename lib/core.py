@@ -91,7 +91,7 @@ def printStatus(start=True):
     """
 
     msg = "( %s ) %s at %s"
-    status = "starting" if start else "shutting down"
+    status = "starting" if start else "die"
     msg %= (
         colored(HOMEPAGE, "green", attrs=["bold", "underline"]),
         status,
