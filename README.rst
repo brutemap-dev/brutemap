@@ -66,6 +66,10 @@ To display a list of available options:
 You can find examples of brutemap usage `here <https://asciinema.org/~hijriyan>`_. 
 For more information about available options, you can visit the `User's manual <https://github.com/brutemap-dev/brutemap/wiki>`_.
 
+Donate
+------
+We hope you are happy and we hope you donate!. Please donate today to: https://paypal.me/aprilahijriyan (thanks!)
+
 
 Links
 -----
