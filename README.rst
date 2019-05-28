@@ -69,7 +69,7 @@ For more information about available options, you can visit the `User's manual <
 Contributing
 ------------
 
-Before contributing to this project, please read the [contributing guidelines](https://github.com/brutemap-dev/brutemap/blob/master/CONTRIBUTING.md).
+Before contributing to this project, please read the `contributing guidelines <https://github.com/brutemap-dev/brutemap/blob/master/CONTRIBUTING.md>`_.
 
 
 Donate
