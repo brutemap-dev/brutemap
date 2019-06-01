@@ -81,6 +81,6 @@ Links
 -----
 
 * Homepage: https://brutemap-dev.github.io
-* Download: `.zip <https://github.com/brutemap-dev/brutemap/zipball/master>`_ (latest version) atau `.tar.gz <https://github.com/brutemap-dev/tarball/master>`_ (latest version).
+* Download: `.zip <https://github.com/brutemap-dev/brutemap/zipball/master>`_ (latest version) or `.tar.gz <https://github.com/brutemap-dev/tarball/master>`_ (latest version).
 * Issue tracker: https://github.com/brutemap-dev/brutemap/issues
 * User's manual: https://github.com/brutemap-dev/brutemap/wiki
