@@ -11,6 +11,7 @@ import os
 import sys
 
 from lib.utils.option import PrettyHelpFormatter
+from lib.compat import xrange
 from lib.core import createWordlist
 from lib.core import printVersion
 from lib.data import DEFAULT
@@ -158,6 +159,21 @@ def cmdLineParser():
         )
 
         other.add_argument(
+            "--use-webdriver",
+            dest="use_webdriver",
+            metavar="name",
+            help="Use custom webdriver (default auto-detect)"
+        )
+
+        other.add_argument(
+            "--webdriver-timeout",
+            dest="webdriver_timeout",
+            metavar="seconds",
+            type=float,
+            help="Waiting time loads page (default %d)" % DEFAULT.WEBDRIVER_TIMEOUT
+        )
+
+        other.add_argument(
             "--max-cred",
             dest="max_credential",
             metavar="num",
@@ -193,7 +209,7 @@ def cmdLineParser():
             # ok-gud => -oG
             opt = "-" + parts[0][0].lower() + parts[1][0].upper()
             # cek jika opsi unik belum ada di penyimpanan
-            if not uniqueOptions.has_key(opt):
+            if opt not in uniqueOptions:
                 # mengganti opsi unik dengan opsi asli
                 uniqueOptions[opt] = option
                 # menambahkan opsi unik ke aksi opsi
@@ -203,7 +219,7 @@ def cmdLineParser():
         for i in xrange(len(args)):
             opt = args[i]
             # cek jika anda menggunakan opsi unik
-            if uniqueOptions.has_key(opt):
+            if opt in uniqueOptions:
                 # dan... ganti dengan opsi asli ! simple !
                 args[i] = uniqueOptions.get(opt)
 
@@ -215,11 +231,11 @@ def cmdLineParser():
             raise SystemExit
 
         if not options.targets:
-            errMsg = "Try '-h/--help' for more information"
+            errMsg = "try '-h/--help' for more information"
             parser.error(errMsg)
 
         if options.sqli_bypass_mode and options.use_sqli_payloads:
-            errMsg = "Clash options! you have to choose one option "
+            errMsg = "clash options! you have to choose one option "
             errMsg += "('--sqli-bypass' or '--sqli-payloads')"
             parser.error(errMsg)
 
@@ -236,17 +252,17 @@ def cmdLineParser():
                     options.regex_map = fp.read()
             try:
                 options.regex_map = json.loads(options.regex_map)
-            except ValueError, e:
-                errMsg = "Cannot load json object: %s\n\n" % options.regex_map
+            except ValueError as e:
+                errMsg = "cannot load json object: %s\n\n" % options.regex_map
                 errMsg += str(e)
                 parser.error(errMsg)
 
         if options.max_credential:
             if options.max_credential < 1:
-                errMsg = "The value of the '--max-cred' option must be greater than 1"
+                errMsg = "the value of the '--max-cred' option must be greater than 1"
                 parser.error(errMsg)
 
         return options
 
-    except argparse.ArgumentError, e:
+    except argparse.ArgumentError as e:
         parser.error(e)

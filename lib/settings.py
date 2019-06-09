@@ -7,11 +7,20 @@ See LICENSE for details.
 
 import string
 import subprocess
+import sys
 
+from selenium.webdriver import Firefox
+from selenium.webdriver import Chrome
+from selenium.webdriver import WebKitGTK
+from selenium.webdriver import Edge
+from selenium.webdriver import Ie
+from selenium.webdriver import Safari
+from selenium.webdriver import PhantomJS
+from selenium.webdriver import Android
 from termcolor import colored
 
 AUTHOR = "Aprila Hijriyan"
-VERSION = "1.0"
+VERSION = "1.1"
 VERSION_STATUS = "4"
 VERSION_STRING = "%s.%s" % (VERSION, VERSION_STATUS)
 TOOL_NAME = "brutemap"
@@ -27,7 +36,7 @@ BANNER = """\033[01;31m\
 |___||_|  |___||_|  |___||_|_|_||__,||  _|
                                      |_|  
               %s v%s
-        %s\n
+      %s\n
 """ % (
     colored(TOOL_NAME, "red", attrs=["bold"]),
     VERSION_STRING,
@@ -82,4 +91,20 @@ URL_SCHEMES = ("http://", "https://")
 
 SPINNER_CHARS = ["|", "/", "-", "\\"]
 
-IS_WINDOWS = subprocess.mswindows
+WEB_DRIVER = {
+    "firefox": Firefox,
+    "chrome": Chrome,
+    "gtk": WebKitGTK,
+    "edge": Edge,
+    "ie": Ie,
+    "safari": Safari,
+    "phantomjs": PhantomJS,
+    "android": Android
+}
+
+IS_PY3K = sys.version_info[0] == 3
+
+if IS_PY3K:
+    IS_WINDOWS = subprocess._mswindows
+else:
+    IS_WINDOWS = subprocess.mswindows

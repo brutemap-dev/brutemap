@@ -5,11 +5,14 @@ Brutemap is (c) 2019 By Brutemap Development Team.
 See LICENSE for details.
 """
 
+from __future__ import print_function
+
 import requests
 
 from lib.brute.start import bruteForceAttack
 from lib.parse.htmlform import getFormField
 from lib.browser import browser
+from lib.compat import raw_input
 from lib.core import getFormElements
 from lib.core import isSupportedTarget
 from lib.core import registerInterruptHandler
@@ -32,7 +35,7 @@ def checkTarget(url):
     try:
         wrapped = errormanager(requests.get)
         response = wrapped(url)
-    except Exception, e:
+    except Exception as e:
         logger.exception(e)
         raise BrutemapSkipTargetException
 
@@ -77,10 +80,10 @@ def checkTarget(url):
                         break
 
                 except KeyboardInterrupt:
-                    print
+                    print()
                     skip_target = True
 
-                except Exception, e:
+                except Exception as e:
                     logger.exception(e)
 
             registerInterruptHandler()

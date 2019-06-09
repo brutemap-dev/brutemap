@@ -7,6 +7,7 @@ See LICENSE for details.
 
 import itertools
 
+from lib.compat import next
 from lib.core import stdoutWrite
 from lib.settings import SPINNER_CHARS
 
@@ -32,7 +33,7 @@ class Spinner(object):
 
     def show_progress(self):
         self.curval += 1
-        progress = "%d%% %s" % (self.percent, self.marker.next())
+        progress = "%d%% %s" % (self.percent, next(self.marker))
         self.write(progress)
 
     def done(self):

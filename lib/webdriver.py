@@ -5,16 +5,10 @@ Brutemap is (c) 2019 By Brutemap Development Team.
 See LICENSE for details.
 """
 
+import time
+
 from selenium.common.exceptions import TimeoutException
 from selenium.common.exceptions import WebDriverException
-from selenium.webdriver import Firefox
-from selenium.webdriver import Chrome
-from selenium.webdriver import WebKitGTK
-from selenium.webdriver import Edge
-from selenium.webdriver import Safari
-from selenium.webdriver import PhantomJS
-from selenium.webdriver import BlackBerry
-from selenium.webdriver import Android
 from selenium.webdriver.support.ui import WebDriverWait
 
 from lib.browser import browser
@@ -22,19 +16,40 @@ from lib.data import logger
 from lib.data import SETTING
 from lib.data import TARGET
 from lib.exceptions import BrutemapSkipTargetException
+from lib.exceptions import BrutemapQuitException
+from lib.settings import WEB_DRIVER
+
+def getWebDriver():
+    """
+    Mendapatkan webdriver yang terinstall
+    """
+
+    wd_name = SETTING.USE_WEBDRIVER
+    if wd_name is not None:
+        wd_name = wd_name.lower()
+        if wd_name in WEB_DRIVER:
+            driver = [WEB_DRIVER[wd_name]]
+        else:
+            criMsg = "Unknown webdriver %s (choose from: %r)" % (repr(wd_name), list(WEB_DRIVER.keys()))
+            logger.critical(criMsg)
+            raise BrutemapQuitException
+    else:
+        driver = list(WEB_DRIVER.values())
+
+    return driver  
 
 def initWebDriver():
     """
     Menemukan WebDriver yang terpasang.
     """
 
-    infoMsg = "Finding web driver..."
-    logger.info(infoMsg)
+    if SETTING.USE_WEBDRIVER is None:
+        infoMsg = "Finding web driver..."
+        logger.info(infoMsg)
 
-    webdriver = [Firefox, Chrome, WebKitGTK, Edge, Safari, PhantomJS, BlackBerry, Android]
-    for driver in webdriver:
+    for driver in getWebDriver():
         try:
-            infoMsg = "Trying %s ..." % str(driver)
+            infoMsg = "%s %s ..." % ("Trying" if not SETTING.USE_WEBDRIVER else "Using", str(driver))
             logger.info(infoMsg)
 
             _browser = driver()
@@ -53,11 +68,12 @@ def initWebDriver():
         except Exception:
             continue
 
-    errMsg = "You need to install a selenium webdriver first. "
-    errMsg += "(visit 'https://www.seleniumhq.org/docs/03_webdriver.jsp')"
+    errMsg = "Cannot find webdriver%s. " % (" %s" % repr(SETTING.USE_WEBDRIVER) if SETTING.USE_WEBDRIVER else "")
+    errMsg += "(visit 'https://www.seleniumhq.org/docs/03_webdriver.jsp') "
+    errMsg += "for further information"
     logger.error(errMsg)
 
-    raise SystemExit
+    raise BrutemapQuitException
 
 def reinitWebDriver(reload_url=True):
     """
@@ -70,6 +86,8 @@ def reinitWebDriver(reload_url=True):
     if SETTING.HTTP_AUTH_HANDLER is None and TARGET.URL is not None:
         if reload_url:
             SETTING.BROWSER.get(TARGET.URL)
+            # menunggu untuk selesai memuat halaman.
+            time.sleep(SETTING.WEBDRIVER_TIMEOUT)
 
 def waitingResult(condition, *args):
     wait = WebDriverWait(browser, 10)

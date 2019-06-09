@@ -5,16 +5,24 @@ Brutemap is (c) 2019 By Brutemap Development Team.
 See LICENSE for details.
 """
 
-import sys
-
-sys.dont_write_bytecode = True
+from __future__ import print_function
 
 try:
+    from warnings import filterwarnings
+
+    # nonaktifkan "warning" dari modul re
+    # reference: https://stackoverflow.com/questions/14463277/how-to-disable-python-warnings
+    filterwarnings("ignore", category=FutureWarning)
+
+    import sys
+
+    sys.dont_write_bytecode = True
+
     from lib.path import setPath
 
     setPath(__file__)
 
-except ImportError:
+except:
     errMsg = "[!] Unable to set base path ! (missing modules). "
     errMsg += "See 'https://github.com/brutemap-dev/brutemap#installation' "
     errMsg += "for installation instructions.\n"
@@ -23,16 +31,17 @@ except ImportError:
 try:
     from lib.controller.start import initialize
     from lib.parse.cmdline import cmdLineParser
+    from lib.compat import raw_input
     from lib.core import initOptions
     from lib.core import printBanner
     from lib.core import printStatus
     from lib.core import stdoutWrite
+    from lib.exceptions import BrutemapQuitException
     from lib.settings import IS_WINDOWS
 
 except KeyboardInterrupt:
-    print
-    errMsg = "[!] Aborted..."
-    exit(errMsg)
+    print()
+    exit("[!] Aborted...")
 
 def main():
     """
@@ -49,8 +58,11 @@ def main():
         initialize()
 
     except SystemExit:
-        print
+        print()
         show_exit_msg = False
+
+    except BrutemapQuitException:
+        pass
 
     finally:
         if show_exit_msg:

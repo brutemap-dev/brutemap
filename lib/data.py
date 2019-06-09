@@ -56,6 +56,10 @@ class SETTING:
     USE_SQLI_PAYLOADS = False
     # daftar sqli payloads.
     SQLI_PAYLOADS = None
+    # webdriver yang digunakan.
+    USE_WEBDRIVER = None
+    # waktu tunggu proses memuat halaman
+    WEBDRIVER_TIMEOUT = None
     # output file.
     OUTPUT = None
     # untuk *python-requests*.
@@ -89,6 +93,8 @@ class DEFAULT:
     SQLI_PAYLOADS = os.path.join(getPath(), os.path.join("data", "sqlipayloads.txt"))
     # socket timeout bawaan.
     SOCKET_TIMEOUT = 25.0
+    # waktu tunggu memuat halaman bawaan.
+    WEBDRIVER_TIMEOUT = 5.0
     # batas mengulang koneksi bawaan.
     MAX_RETRY = 5
     # waktu tunggu koneksi bawaan.
@@ -99,6 +105,7 @@ class DEFAULT:
     FILE_EXTENSION = "html"
     # nama file hasil (bawaan) yang akan digunakan.
     OUTPUT = ""
+    # root direktori brutemap.
     ROOT_PATH = os.path.join(os.getenv("HOME", os.getcwd()), ".brutemap")
     # output directory bawaan
     OUTPUT_DIRECTORY = os.path.join(ROOT_PATH, "output")

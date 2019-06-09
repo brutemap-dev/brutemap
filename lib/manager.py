@@ -10,6 +10,7 @@ import time
 
 from urllib3.exceptions import ProtocolError
 
+from lib.compat import raw_input
 from lib.data import logger
 from lib.data import SETTING
 from lib.data import TARGET
@@ -17,12 +18,14 @@ from lib.exceptions import BrutemapException
 from lib.exceptions import BrutemapStopBruteForceException
 
 INFO_ACCOUNT = []
-RETRY_COUNT = 0
+RETRY_COUNT = None
 
 def errormanager(func):
     """
     Menangkap spesifikasi pengecualian
     """
+
+    globals()["RETRY_COUNT"] = 0
 
     @functools.wraps(func)
     def decorated(*args, **kwargs):
@@ -31,21 +34,22 @@ def errormanager(func):
         try:
             return func(*args, **kwargs)
 
-        except ProtocolError, e:
+        except ProtocolError as e:
             # XXX: abaikan ?
             pass
 
-        except Exception, e:
+        except Exception as e:
             if issubclass(e.__class__, BrutemapException):
-                raise e
+                raise
 
             time.sleep(SETTING.DELAY)
             logger.error("Error occurred: %s" % str(e))
+
             if RETRY_COUNT != SETTING.MAX_RETRY:
                 RETRY_COUNT += 1
                 return decorated(*args, **kwargs)
 
-            raise e
+            raise
 
     return decorated
 

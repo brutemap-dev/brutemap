@@ -6,7 +6,10 @@ See LICENSE for details.
 """
 
 import os
+import pickle
 
+from lib.compat import file
+from lib.compat import next
 from lib.exceptions import BrutemapNullValueException
 
 class Wordlist(object):
@@ -23,12 +26,14 @@ class Wordlist(object):
         self._fp = None
 
     def __iter__(self):
-        return self
+        # membuat klon objek, untuk proses bruteforce.
+        # supaya, tidak mengurangi isi dari wordlist tersebut.
+        return pickle.loads(pickle.dumps(self))
 
     def next(self):
         self.load()
         try:
-            line = self._fp.next().rstrip()
+            line = next(self._fp).rstrip()
             return line
 
         except AttributeError:
@@ -39,6 +44,9 @@ class Wordlist(object):
                 self._fp.close()
             self._fp = None
             return self.next()
+
+    # untuk py3k
+    __next__ = next
 
     def load(self):
         """

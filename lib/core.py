@@ -5,6 +5,8 @@ Brutemap is (c) 2019 By Brutemap Development Team.
 See LICENSE for details.
 """
 
+from __future__ import print_function
+
 import os
 import platform
 import random
@@ -13,7 +15,6 @@ import signal
 import sys
 import time
 import traceback
-import urlparse
 
 from backports.shutil_get_terminal_size import get_terminal_size
 from colorama import init as coloramainit
@@ -25,6 +26,9 @@ from termcolor import colored
 
 from lib.utils.wordlist import Wordlist
 from lib.browser import browser
+from lib.compat import get_items
+from lib.compat import raw_input
+from lib.compat import urlparse
 from lib.data import DEFAULT
 from lib.data import logger
 from lib.data import SETTING
@@ -90,14 +94,15 @@ def printStatus(start=True):
     Mencetak pesan status jika brutemap sedang berjalan atau tidak
     """
 
-    msg = "( %s ) %s at %s"
-    status = "starting" if start else "die"
+    msg = "\n[%s] ( %s ) %s at %s\n\n"
+    char, status = ("*", "Starting") if start else ("-", "Die")
     msg %= (
+        char,
         colored(HOMEPAGE, "green", attrs=["bold", "underline"]),
         status,
         time.strftime("%X")
     )
-    logger.info(msg)
+    stdoutWrite(msg)
 
     if not start:
         tryCloseWebDriver()
@@ -111,7 +116,7 @@ def interruptHandler(signum, frame):
     if SETTING.IGNORE_INTERRUPT:
         return
 
-    print
+    print()
     registerInterruptHandler(reset=True)
 
     try:
@@ -130,7 +135,7 @@ def interruptHandler(signum, frame):
             raise BrutemapQuitException
 
     except KeyboardInterrupt:
-        print
+        print()
 
         errMsg = "User aborted"
         logger.error(errMsg)
@@ -301,7 +306,7 @@ def isSupportedTarget(object_):
         if not SETTING.IS_WEBSHELL_AUTHENTICATION:
             SETTING.IS_WEBSHELL_AUTHENTICATION = True
 
-        return True, "WEB SHELL"
+        return True, "WEBSHELL"
 
     elif isSlideLoginPage(object_):
         return True, "SLIDE"
@@ -375,7 +380,7 @@ def getAccount():
             jawaban = raw_input(infoMsg).lower()
         except KeyboardInterrupt:
             re_init = True
-            print
+            print()
 
         if jawaban.startswith("y"):
             domains = ""
@@ -383,7 +388,7 @@ def getAccount():
                 domains = raw_input("[#] Enter domain (e.g. 'google.com, yahoo.com')> ")
             except KeyboardInterrupt:
                 re_init = True
-                print
+                print()
 
             for _ in re.split(SEPARATOR_REGEX, domains):
                 if _:
@@ -400,7 +405,7 @@ def getAccount():
                 jawaban = raw_input(infoMsg).lower()
             except KeyboardInterrupt:
                 re_init = True
-                print
+                print()
 
             if jawaban.startswith("n"):
                 infoMsg = "Disable the 'SQL injection bypass authentication' technique..."
@@ -420,7 +425,7 @@ def getAccount():
                 jawaban = raw_input(infoMsg).lower()
             except KeyboardInterrupt:
                 re_init = True
-                print
+                print()
 
             if jawaban.startswith("n"):
                 SETTING.USE_SQLI_PAYLOADS = abaikan = False
@@ -551,7 +556,7 @@ def initOptions(options):
 
         new[k] = v
 
-    SETTING.init(new.items())
+    SETTING.init(get_items(new))
 
 def clearData():
     """

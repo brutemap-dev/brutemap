@@ -18,7 +18,7 @@ from lib.exceptions import BrutemapStopBruteForceException
 @brutemanager
 def login(username, password):
     handler = SETTING.HTTP_AUTH_HANDLER(username, password)
-    wrapped = errormanager(requests.get, False)
+    wrapped = errormanager(requests.get)
     r = wrapped(TARGET.URL, auth=handler)
     if r.status_code == 200:
         status = STATUS.OK

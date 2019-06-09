@@ -5,6 +5,8 @@ Brutemap is (c) 2019 By Brutemap Development Team.
 See LICENSE for details.
 """
 
+from __future__ import print_function
+
 from lib.controller.target import checkTarget
 from lib.core import autoCompleteUrl
 from lib.core import clearData
@@ -51,7 +53,7 @@ def initialize():
         pass
 
     except KeyboardInterrupt:
-        print
+        print()
         errMsg = "User aborted"
         logger.error(errMsg)
 
