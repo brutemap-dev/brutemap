@@ -6,7 +6,6 @@ See LICENSE for details.
 """
 
 import string
-import subprocess
 import sys
 
 from selenium.webdriver import Firefox
@@ -104,7 +103,5 @@ WEB_DRIVER = {
 
 IS_PY3K = sys.version_info[0] == 3
 
-if IS_PY3K:
-    IS_WINDOWS = subprocess._mswindows
-else:
-    IS_WINDOWS = subprocess.mswindows
+# for python 3.4, because it doesn't have the mswindows attribute.
+IS_WINDOWS = sys.platform.startswith("win")
