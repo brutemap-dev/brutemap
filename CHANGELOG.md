@@ -7,7 +7,7 @@ This release, improves compatibility with python version 3000, fixes small bugs 
 ### Added 
 
 * new option (`-uW` or` --use-webdriver`); to use the webdriver as you want. 
-* new option (`wT` or` --webdriver-timeout`); to wait for the webdriver to finish loading the page.
+* new option (`-wT` or` --webdriver-timeout`); to wait for the webdriver to finish loading the page.
 
 ### Download
 
